@@ -5,15 +5,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
+
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -21,13 +13,13 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
+import JavaProject.hotel.HotelMain;
+
 import util.ImageManager;
-import util.newWindow;
 
 public class TourApp extends JFrame {
 	
@@ -37,6 +29,8 @@ public class TourApp extends JFrame {
 	JLabel name;
 	JLabel comm;
 	JPanel p_south;
+	//JPanel p_west;
+	//JLabel ing;
 	JMenuBar bar;
 	JMenu[] menu;
 	String[] menu_title= {"place","room","transport","community"};
@@ -48,7 +42,9 @@ public class TourApp extends JFrame {
 	String[] place_title= {"seoul.png","ki.png","kang.png","chung.png","jeon.png","keong.png","jeju.png"};
 	JTable table;
 	ImageManager imageManager=new ImageManager();
-	
+	LoginForm loginform;
+	HotelMain hotelmain;
+	ShowAction showaction;
 	
 	public TourApp() {
 		
@@ -61,9 +57,11 @@ public class TourApp extends JFrame {
 		p_north=new JPanel();
 		p_center=new JPanel();
 		p_south=new JPanel();
+		//p_west=new JPanel();
+		//ing=new JLabel();
 		bar=new JMenuBar();
 		menu=new JMenu[4];
-		itemArray=new JMenuItem[2][4];
+		itemArray=new JMenuItem[4][2];
 		list=new JButton("예약 내역");
 		logout=new JButton("로그아웃");
 		table=new JTable(5,5);
@@ -74,12 +72,15 @@ public class TourApp extends JFrame {
 		}
 		
 		for(int a=0;a<item_title.length;a++) {
-			for(int j=0;j<2;j++) {
-				menu[a].add(item_title[a][j]);
-			}
+			for(int j=0;j<item_title[a].length;j++) {
+				
+				itemArray[a][j]=new JMenuItem(item_title[a][j]);
+				menu[a].add(itemArray[a][j]);
+				itemArray[a][j].addActionListener(new ShowAction());	
+		}
 		}
 		setJMenuBar(bar); //프레임에 메뉴 부착!!
-		
+		//p_west.add(ing);
 		p_north.add(list);
 		p_north.add(logout);
 		
@@ -115,14 +116,52 @@ public class TourApp extends JFrame {
 				list();
 			}
 		});
+		logout.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				logout();
+			}
+		});
 		
-				
 	
-		
 		setBounds(300,100,1300,500);
 		setVisible(true);
 	}
-	
-	
+	public void logout() {
+		dispose();
+		new LoginForm();
+	}
+	class ShowAction implements ActionListener{
+		public void actionPerformed(ActionEvent e) {
+
+					String cmd=e.getActionCommand();
+					switch(cmd) {
+					case "intro":
+						new TourApp();
+						break;
+					case "food":
+						new TourApp();
+						break;
+					case "hotel":
+						new HotelMain();
+						break;
+					case "others":
+						new TourApp();
+						break;
+					case "rentcar":
+						new TourApp();
+						break;
+					case "subway":
+						new TourApp();
+						break;
+					case "chat":
+						new TourApp();
+						break;
+					case "customer":
+						new TourApp();
+						break;
+					}
+			}
+		}
 
 }

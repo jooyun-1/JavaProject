@@ -1,0 +1,22 @@
+1.  create table member(
+ member_id int primary key auto_increment
+ ,m_mail varchar(25)
+ ,m_pass varchar(25)
+ ,m_name varchar(25)
+ ,m_number varchar(25)
+ ) default character set utf8;
+
+2.
+
+
+
+3. create table h_reserv(
+    -> h_reserv_id int primary key auto_increment
+    -> ,member_id int
+    -> ,h_name varchar(25)
+    -> ,h_area varchar(25)
+    -> ,h_type varchar(25)
+    -> ,h_price int default 0
+    -> ,constraint fk_hreserv foreign key (member_id) references member(member_i
+d)
+    -> )default character set utf8;

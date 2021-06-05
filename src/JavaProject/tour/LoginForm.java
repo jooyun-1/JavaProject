@@ -94,6 +94,7 @@ public class LoginForm extends JFrame {
 	
 	}
 	//목록
+
 	public void loginCheck() {
 	      String sql="select * from member where m_mail=? and m_pass=?";
 	      
@@ -108,10 +109,11 @@ public class LoginForm extends JFrame {
 	         rs=pstmt.executeQuery();
 	         
 	         //회원인지 아닌지?
+	         
 	         if(rs.next()) {
 	            JOptionPane.showMessageDialog(this, "인증되었습니다");
 	            this.setSession(true);
-	            
+	            dispose();
 	            new TourApp();
 	         }else {
 	            JOptionPane.showMessageDialog(this, "로그인 정보가 올바르지 않습니다");

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<places>
+	<place>
+		<hotelName>신라호텔</hotelName> 
+		<area>서울</area>
+		<hotelType>호텔</hotelType>
+		<price>100000</price>
+	</place>
+	<place>
+		<hotelName>노보텔</hotelName> 
+		<area>서울</area>
+		<hotelType>호텔</hotelType>
+		<price>90000</price>
+	</place>
+</places>
+
+	
