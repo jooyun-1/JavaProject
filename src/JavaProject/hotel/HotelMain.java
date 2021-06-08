@@ -15,6 +15,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import javax.swing.JButton;
@@ -32,6 +33,8 @@ import javax.xml.parsers.SAXParserFactory;
 import org.xml.sax.SAXException;
 
 import JavaProject.tour.DBManager;
+import JavaProject.tour.Member;
+import JavaProject.tour.TourApp;
 
 public class HotelMain extends JFrame{
    JPanel p_north,p_east;
@@ -63,7 +66,12 @@ public class HotelMain extends JFrame{
    DBManager dbmanager=new DBManager();
    HotelHandler handler;
    Diary diary;
-   public HotelMain() {
+   TourApp tourApp;
+   HotelModel hotelmodel;
+   
+   public HotelMain(TourApp tourApp) {
+	   this.tourApp=tourApp;
+	   
       //생성
       p_north=new JPanel();
       ch_area=new Choice();
@@ -151,7 +159,7 @@ public class HotelMain extends JFrame{
 	});
       bt_search.addActionListener(new ActionListener() {
          public void actionPerformed(ActionEvent e) {
-            
+            search();
          }
       });
       
@@ -249,15 +257,20 @@ public class HotelMain extends JFrame{
    
       
    public void reserv() {
-	   String sql="insert into h_reserv(h_name,h_area,h_type,h_price) values(?,?,?,?)";
+	   Member member=tourApp.getMember();
+	   
+	   String sql="insert into h_reserv(member_sid,h_name,h_area,h_type,h_price) values(?,?,?,?,?)";
+	   
+	   
 		PreparedStatement pstmt=null;
 		Connection con=dbmanager.getConnection();
 		try {
 			pstmt=con.prepareStatement(sql);
-			pstmt.setString(1, t_hotel.getText());
-			pstmt.setString(2, t_area.getText());
-			pstmt.setString(3, t_type.getText());
-			pstmt.setString(4, t_price.getText());
+			pstmt.setInt(1,member.getMember_id());
+			pstmt.setString(2, t_hotel.getText());
+			pstmt.setString(3, t_area.getText());
+			pstmt.setString(4, t_type.getText());
+			pstmt.setString(5, t_price.getText());
 			int result=pstmt.executeUpdate();
 			if(result==1) {
 				JOptionPane.showMessageDialog(this, "등록성공");
@@ -270,7 +283,34 @@ public class HotelMain extends JFrame{
 			dbmanager.release(con,pstmt);
 		}
 	}
-   }
    
+   //vector의 data 를 대상으로 조사 
+ public void search() {
+       // Vector <Hotel>result=new Vector<Hotel>();
+        String word=t_hotelName.getText();
+        
+        
+        /*for(int i=0;i<model.data.size();i++) {
+          /String d=(String)model.getValueAt(i, 1);
+             
+           if(d.startsWith(word)) {
+              //벡터에 VO 만들어 넣어주기 
+//              hotel.setArea(d);
+//              result.add(hotel);
+//              
+//              model.data.add(hotel);
+           }
+           
+        }
+       //교체 
+      // table.setModel(model);
+       //업ㄷ티 
+       table.updateUI();;
+      }*/
+   }
+   }
+
+   
+  
  
    

@@ -35,7 +35,7 @@ public class LoginForm extends JFrame {
 	TourApp tourapp;
 	//데이터베이스 관련 
 	DBManager dbmanager=new DBManager();
-	private boolean session;
+	
 	
 	
 	public LoginForm()  {
@@ -111,13 +111,19 @@ public class LoginForm extends JFrame {
 	         //회원인지 아닌지?
 	         
 	         if(rs.next()) {
-	            JOptionPane.showMessageDialog(this, "인증되었습니다");
-	            this.setSession(true);
+	            JOptionPane.showMessageDialog(this, "로그인되었습니다");
+	            member=new Member();//empty
+	            member.setMember_id(rs.getInt("member_id"));
+	            member.setM_mail(rs.getString("m_mail"));
+	            member.setM_pass(rs.getString("m_pass"));
+	            member.setM_name(rs.getString("m_name"));
+	            member.setM_number(rs.getString("m_number"));
+	            new TourApp(member);
+	            
 	            dispose();
-	            new TourApp();
+	            
 	         }else {
 	            JOptionPane.showMessageDialog(this, "로그인 정보가 올바르지 않습니다");
-	            
 	         }
 	      } catch (SQLException e) {
 	         e.printStackTrace();
@@ -126,13 +132,7 @@ public class LoginForm extends JFrame {
 	      }
 	   }
 	
-	public boolean isSession() {
-		return session;
-	}
 
-	public void setSession(boolean session) {
-		this.session = session;
-	}
 	
 	public static void main(String[] args) {
 		new LoginForm();

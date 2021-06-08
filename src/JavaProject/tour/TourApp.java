@@ -6,7 +6,6 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -18,7 +17,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 import JavaProject.hotel.HotelMain;
-
+import JavaProject.hotelreserv.Hotelres;
+import JavaProject.rentcar.CarMain;
 import util.ImageManager;
 
 public class TourApp extends JFrame {
@@ -42,12 +42,15 @@ public class TourApp extends JFrame {
 	String[] place_title= {"seoul.png","ki.png","kang.png","chung.png","jeon.png","keong.png","jeju.png"};
 	JTable table;
 	ImageManager imageManager=new ImageManager();
+	
+	private boolean session;
+	private Member member; //로그인 성공시 전달받을 vo 
 	LoginForm loginform;
 	HotelMain hotelmain;
 	ShowAction showaction;
 	
-	public TourApp() {
-		
+	public TourApp(Member member) {
+		this.member=member;
 		
 		//생성
 		JPanel NewWindowContainer = new JPanel();
@@ -129,36 +132,58 @@ public class TourApp extends JFrame {
 	}
 	public void logout() {
 		dispose();
-		new LoginForm();
+		this.setSession(false);
+		loginform=null;
+		member=null;
 	}
+	
+	public void list() {
+		new Hotelres(TourApp.this);
+	}
+	
+	
+	public Member getMember() {
+		return member;
+	}
+	public void setMember(Member member) {
+		this.member = member;
+	}
+	public boolean isSession() {
+		return session;
+	}
+
+	public void setSession(boolean session) {
+		this.session = session;
+	}
+
 	class ShowAction implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 
 					String cmd=e.getActionCommand();
 					switch(cmd) {
 					case "intro":
-						new TourApp();
+						
 						break;
 					case "food":
-						new TourApp();
+						
 						break;
 					case "hotel":
-						new HotelMain();
+						new HotelMain(TourApp.this);
 						break;
 					case "others":
-						new TourApp();
+						
 						break;
 					case "rentcar":
-						new TourApp();
+						new CarMain(TourApp.this);
 						break;
 					case "subway":
-						new TourApp();
+						
 						break;
 					case "chat":
-						new TourApp();
+						
 						break;
 					case "customer":
-						new TourApp();
+						
 						break;
 					}
 			}
