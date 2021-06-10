@@ -95,7 +95,7 @@ public class MessageApp extends JFrame {
       empty = new JPanel();
       empty.setBackground(Color.WHITE);
       
-      t_text = new JLabel("[ Regist Review ]");
+      t_text = new JLabel("[ 나의 리뷰 내역 ]");
       t_text.setForeground(Color.DARK_GRAY);
       
       empty3 = new JPanel();
@@ -139,7 +139,7 @@ public class MessageApp extends JFrame {
       emptyw = new JPanel();
       emptyw.setBackground(Color.WHITE);
       
-      t_textw = new JLabel("[ Your Review ]");
+      t_textw = new JLabel("[ 리뷰 등록 ]");
       t_textw.setForeground(Color.DARK_GRAY);
       
 
@@ -281,7 +281,7 @@ public class MessageApp extends JFrame {
       
       this.addWindowListener(new WindowAdapter() {
          public void windowClosing(WindowEvent e) {
-            System.exit(0); // 프로세스 종료
+            
             dbmanager.release(con);;
          }
          
