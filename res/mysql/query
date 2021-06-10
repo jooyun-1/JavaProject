@@ -1,22 +1,78 @@
-1.  create table member(
- member_id int primary key auto_increment
- ,m_mail varchar(25)
- ,m_pass varchar(25)
- ,m_name varchar(25)
- ,m_number varchar(25)
- ) default character set utf8;
+create  table member(
+   
+member_id  int  primary key  auto_increment 
+ 
+, m_mail  varchar(25) 
+ 
+, m_pass varchar(25)
+ 
+, m_name varchar(25)
+, m_number varchar(25)) default  character set utf8;
 
-2.
+create table hotel(
+ hotel_id int primary key auto_increment
+, h_name varchar(25)
+, h_area varchar(25)
+, h_type varchar(25)
+, h_price int default 0
+)default character set utf8;
 
+create table h_reserv(
+h_reserv_id int primary key auto_increment
+, m_name varchar(25)
+, h_name varchar(25)
+, h_area varchar(25)
+, h_type varchar(25)
+, checkin varchar(25)
+, checkout varchar(25)
+, h_price int default 0
+, constraint fk_hreserv foreign key (m_name) 
+references member(m_name)
+) default character set utf8;
 
+create table r_reserv(
+ r_id int primary key auto_increment
+, m_name varchar(25)
+, car_name varchar(25)
+, pick varchar(25)
+, r_return varchar(25)
+, time int default 0
+, price int default 0
+, detail varchar(50)
+, constraint fk_carmem foreign key (m_name) 
+references member(m_name)
+) default character set utf8;
 
-3. create table h_reserv(
-    -> h_reserv_id int primary key auto_increment
-    -> ,member_id int
-    -> ,h_name varchar(25)
-    -> ,h_area varchar(25)
-    -> ,h_type varchar(25)
-    -> ,h_price int default 0
-    -> ,constraint fk_hreserv foreign key (member_id) references member(member_i
-d)
-    -> )default character set utf8;
+ALTER TABLE member ADD UNIQUE uk_Vmember (m_name);
+
+create table rentcar(
+car_id int primary key auto_increment
+, car_name varchar(25)
+, pickarea varchar(25)
+, returnarea varchar(25)
+, usetime int default 0
+, price int default 0
+) default character set utf8;
+
+create table message(
+ 
+message_id int primary key auto_increment
+ 
+,
+
+title varchar(100)
+ 
+, 
+m_name varchar(20)
+ 
+, 
+content text
+ 
+, 
+regdate timestamp default now()
+ 
+, 
+hit int default 0
+,
+constraint fk_message foreign key (m_name) references member(m_name)
+)default character set utf8
