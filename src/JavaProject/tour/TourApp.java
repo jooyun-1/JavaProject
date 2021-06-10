@@ -19,11 +19,10 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import JavaProject.chat.MainChat;
-import JavaProject.chat.Server;
+
 import JavaProject.hotel.HotelMain;
 import JavaProject.hotelreserv.Hotelres;
-import JavaProject.intro.Intro;
+
 import JavaProject.message.MessageApp;
 import JavaProject.rentcar.CarMain;
 
@@ -32,9 +31,9 @@ public class TourApp extends JFrame{
    
    JMenuBar bar;
    JMenu[] menu;
-   String[] menu_title= {"place","reservation","community"};
+   String[] menu_title= {"reservation","community"};
    JMenuItem[][] itemArray;
-   String[][] item_title={{"intro"},{"hotel","rentcar"},{"chat","customer"}};
+   String[][] item_title={{"hotel","rentcar"},{"chat","customer"}};
    ShowAction showaction;
    JScrollPane scrollPane;
    ImageIcon i = new ImageIcon("D:\\workspace\\korea202102_javaworkspace\\JavaProject\\res\\Main.jpg");
@@ -63,8 +62,8 @@ public class TourApp extends JFrame{
         this.setTitle("Tour");
         
         bar=new JMenuBar();
-      menu=new JMenu[3];
-      itemArray=new JMenuItem[3][2];
+      menu=new JMenu[2];
+      itemArray=new JMenuItem[2][2];
         
       for(int i=0;i<menu_title.length;i++) {
          menu[i]=new JMenu(menu_title[i]);
@@ -200,9 +199,6 @@ public class TourApp extends JFrame{
 
                   String cmd=e.getActionCommand();
                   switch(cmd) {
-                  case "intro":
-                     new Intro(TourApp.this);
-                     break;
                 
                   case "hotel":
                      new HotelMain(TourApp.this);
@@ -213,10 +209,9 @@ public class TourApp extends JFrame{
                      break;
             
                   case "chat":
-                     new Server(TourApp.this);
-                     new MainChat(TourApp.this);
+                    
                      break;
-                  case "customer":
+                  case "Review":
                      new MessageApp(TourApp.this);
                      break;
                   }
