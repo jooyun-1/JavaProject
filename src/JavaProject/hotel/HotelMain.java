@@ -1,7 +1,6 @@
 package JavaProject.hotel;
 
 import java.awt.BorderLayout;
-import java.awt.Choice;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -15,8 +14,8 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Vector;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -33,12 +32,12 @@ import javax.xml.parsers.SAXParserFactory;
 import org.xml.sax.SAXException;
 
 import JavaProject.tour.DBManager;
-import JavaProject.tour.Member;
 import JavaProject.tour.TourApp;
+
 
 public class HotelMain extends JFrame{
    JPanel p_north,p_east;
-   Choice ch_area;
+   JLabel la_search;//지역 검색 라벨
    JTextField t_hotelName;
    JButton bt_search;
    JButton loadXml;
@@ -54,29 +53,29 @@ public class HotelMain extends JFrame{
    JTextField t_type;
    JLabel la_price;//가격
    JTextField t_price;
-   JLabel la_reserveSt;//예약 시작일
-   JTextField t_reserveSt;
-   JLabel la_reserveEnd;//예약 종료일
-   JTextField t_reserveEnd;
+   JLabel la_checkin;//예약 시작일
+   JTextField t_checkin;
+   JLabel la_checkout;//예약 종료일
+   JTextField t_checkout;
    JButton bt_reservation;//예약하기
+   JButton bt_diary;
    
-   
-   String[] areaArray= {"서울","경기","충청도","전라도","강원도","경상도","제주도"};
    
    DBManager dbmanager=new DBManager();
    HotelHandler handler;
    Diary diary;
    TourApp tourApp;
-   HotelModel hotelmodel;
-   
+   HotelModel model;
+   Connection con;
+
    public HotelMain(TourApp tourApp) {
-	   this.tourApp=tourApp;
-	   
+     this.tourApp=tourApp;
+    
       //생성
       p_north=new JPanel();
-      ch_area=new Choice();
+      la_search=new JLabel("지역을 검색 해주세요                         ex)서울,충청도,제주도...");
       t_hotelName=new JTextField(25);
-      loadXml=new JButton("Xml로드");
+      loadXml=new JButton("목록보기");
       bt_search=new JButton("검색");
       
       //센터
@@ -92,14 +91,16 @@ public class HotelMain extends JFrame{
       t_type=new JTextField();
       la_price=new JLabel("가격");
       t_price=new JTextField();
-      la_reserveSt=new JLabel("예약시작일");
-      t_reserveSt=new JTextField();
-      la_reserveEnd=new JLabel("예약종료일");
-      t_reserveEnd=new JTextField();
+      la_checkin=new JLabel("예약시작일");
+      t_checkin=new JTextField();
+      la_checkout=new JLabel("예약종료일");
+      t_checkout=new JTextField();
       bt_reservation=new JButton("예약하기");
-   
+      bt_diary=new JButton("예약일");
       
       //스타일 
+
+
       scroll.setPreferredSize(new Dimension(800,400));
       p_east.setLayout(new FlowLayout());
       p_east.setPreferredSize(new Dimension(500,400));
@@ -109,27 +110,27 @@ public class HotelMain extends JFrame{
       t_area.setPreferredSize(d);
       t_type.setPreferredSize(d);
       t_price.setPreferredSize(d);
-      t_reserveSt.setPreferredSize(d);
-      t_reserveEnd.setPreferredSize(d);
+      t_checkin.setPreferredSize(d);
+      t_checkout.setPreferredSize(d);
       
       Dimension a=new Dimension(80,30);
       la_hotel.setPreferredSize(a);
       la_area.setPreferredSize(a);
       la_type.setPreferredSize(a);
       la_price.setPreferredSize(a);
-      la_reserveSt.setPreferredSize(a);
-      la_reserveEnd.setPreferredSize(a);
+      la_checkin.setPreferredSize(a);
+      la_checkout.setPreferredSize(a);
+      la_search.setPreferredSize(new Dimension(330,30));
       
       
       //조립
-      p_north.add(ch_area);
-      p_north.add(t_hotelName);
-      p_north.add(loadXml);
-      p_north.add(bt_search);
-      add(p_north,BorderLayout.NORTH);
-      for(int i=0;i<areaArray.length;i++) {
-         ch_area.add(areaArray[i]);
-      }
+      
+      p_north.add(la_search);
+     p_north.add(t_hotelName);
+     p_north.add(loadXml);
+     p_north.add(bt_search);
+     add(p_north,BorderLayout.NORTH);
+ 
    
       add(scroll);
       p_east.add(la_hotel);
@@ -140,67 +141,61 @@ public class HotelMain extends JFrame{
       p_east.add(t_type);
       p_east.add(la_price);
       p_east.add(t_price);
-      p_east.add(la_reserveSt);
-      p_east.add(t_reserveSt);
-      p_east.add(la_reserveEnd);
-      p_east.add(t_reserveEnd);
+      p_east.add(la_checkin);
+      p_east.add(t_checkin);
+      p_east.add(la_checkout);
+      p_east.add(t_checkout);
+      p_east.add(bt_diary);
       p_east.add(bt_reservation);
       add(p_east,BorderLayout.EAST);
       
       //리스너
       
-      //검색
-      loadXml.addActionListener(new ActionListener() {
-		
-		public void actionPerformed(ActionEvent e) {
-			loadXML();
-			
-		}
-	});
-      bt_search.addActionListener(new ActionListener() {
-         public void actionPerformed(ActionEvent e) {
-            search();
-         }
-      });
-      
-      //예약하기
-      bt_reservation.addActionListener(new ActionListener() {
-         public void actionPerformed(ActionEvent e) {
-            reserv();
-         }
-      });
-      t_reserveSt.addMouseListener(new MouseAdapter() {
-         public void mouseClicked(MouseEvent e) {
-            diary=new Diary();
-            
-         }
-      });
-      t_reserveEnd.addMouseListener(new MouseAdapter() {
-         public void mouseClicked(MouseEvent e) {
-            diary=new Diary();
-         }
-      });
+     //검색
+     loadXml.addActionListener(new ActionListener() {   
+      public void actionPerformed(ActionEvent e) {
+         loadXML();   
+      }
+     });
+     bt_search.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+           search();
+        }
+     });
+     
+     //예약하기
+     bt_reservation.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+           reserv();
+        }
+     });
+     bt_diary.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+         t_checkin.setText("");
+         t_checkout.setText("");
+         diary=new Diary(HotelMain.this);
+      }
+     });
       
       
-      
-      //상세보기
-      table.addMouseListener(new MouseAdapter() {
-         public void mouseReleased(MouseEvent e) {
-            String hotelName=(String) table.getValueAt(table.getSelectedRow(), 0);
-            String area=(String) table.getValueAt(table.getSelectedRow(), 1);
-            String hotelType=(String) table.getValueAt(table.getSelectedRow(), 2);
-            int price=Integer.parseInt((String)table.getValueAt(table.getSelectedRow(), 3));
-            
-            t_hotel.setText(hotelName);
-            t_area.setText(area);
-            t_type.setText(hotelType);
-            t_price.setText(Integer.toString(price));
-         }
-      });      
+     //상세보기
+     table.addMouseListener(new MouseAdapter() {
+        public void mouseReleased(MouseEvent e) {
+           String hotelName=(String) table.getValueAt(table.getSelectedRow(), 0);
+           String area=(String) table.getValueAt(table.getSelectedRow(), 1);
+           String hotelType=(String) table.getValueAt(table.getSelectedRow(), 2);
+           int price=Integer.parseInt((String)table.getValueAt(table.getSelectedRow(), 3));
+           
+           t_hotel.setText(hotelName);
+           t_area.setText(area);
+           t_type.setText(hotelType);
+           t_price.setText(Integer.toString(price));
+        }
+     });      
    
       setBounds(300,100,1300,500);
       setVisible(true);
-      setDefaultCloseOperation(EXIT_ON_CLOSE);
+      setDefaultCloseOperation(DISPOSE_ON_CLOSE);
       
    }
    
@@ -213,35 +208,12 @@ public class HotelMain extends JFrame{
          SAXParser saxParser=factory.newSAXParser();//파서생성
          saxParser.parse(new File(uri),handler=new HotelHandler());
          //JTable의 모델 데이터와 파싱한 결과와의 매칭은 파싱 전? 파싱한 후?
-         HotelModel model=new HotelModel();
+         model=new HotelModel();
          model.data=handler.hotelList;
          
          table.setModel(model);//바로 이 순간부터 JTable은  TableModel의
                                          //메서드들을 호출하게된다~~? 왜? 그래야 표를 구성하니깐..
-         String sql="insert into hotel(h_name,h_area,h_type,h_price) values(?,?,?,?)";
          
-         PreparedStatement pstmt=null;
-         Connection con=dbmanager.getConnection();
-         try {
-            for(int i=0;i<handler.hotelList.size();i++) {
-               pstmt=con.prepareStatement(sql);
-               pstmt.setString(1,handler.hotelList.get(i).getHotelName());
-               pstmt.setString(2, handler.hotelList.get(i).getArea());
-               pstmt.setString(3,  handler.hotelList.get(i).getHotelType());
-               pstmt.setInt(4,  handler.hotelList.get(i).getPrice());
-               int result=pstmt.executeUpdate();
-               if(result==1) {
-                 System.out.println("등록성공");
-               }else {
-                System.out.println("등록실패");
-               }
-            }
-         
-         } catch (SQLException e) {
-            e.printStackTrace();
-         }finally {
-            dbmanager.release(con,pstmt);
-         }
       } catch (URISyntaxException e) {
          e.printStackTrace();
       } catch (ParserConfigurationException e) {
@@ -257,60 +229,52 @@ public class HotelMain extends JFrame{
    
       
    public void reserv() {
-	   Member member=tourApp.getMember();
-	   
-	   String sql="insert into h_reserv(member_sid,h_name,h_area,h_type,h_price) values(?,?,?,?,?)";
-	   
-	   
-		PreparedStatement pstmt=null;
-		Connection con=dbmanager.getConnection();
-		try {
-			pstmt=con.prepareStatement(sql);
-			pstmt.setInt(1,member.getMember_id());
-			pstmt.setString(2, t_hotel.getText());
-			pstmt.setString(3, t_area.getText());
-			pstmt.setString(4, t_type.getText());
-			pstmt.setString(5, t_price.getText());
-			int result=pstmt.executeUpdate();
-			if(result==1) {
-				JOptionPane.showMessageDialog(this, "등록성공");
-			}else {
-				JOptionPane.showMessageDialog(this, "등록실패");
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}finally {
-			dbmanager.release(con,pstmt);
-		}
-	}
+      String sql="insert into h_reserv(m_name,h_name,h_area,h_type,checkin,checkout,h_price) values(?,?,?,?,?,?,?)";
+      PreparedStatement pstmt=null;
+      con=dbmanager.getConnection();
+      
+      try {
+         pstmt=con.prepareStatement(sql);
+         pstmt.setString(1,tourApp.getMember().getM_name());
+         pstmt.setString(2, t_hotel.getText());
+         pstmt.setString(3, t_area.getText());
+         pstmt.setString(4, t_type.getText());
+         pstmt.setString(5, t_checkin.getText());
+         pstmt.setString(6, t_checkout.getText());
+         pstmt.setString(7, t_price.getText());
+         
+         int result=pstmt.executeUpdate();
+         if(result==1) {
+            JOptionPane.showMessageDialog(this, "등록성공");
+         }else {
+            JOptionPane.showMessageDialog(this, "등록실패");
+         }
+      } catch (SQLException e) {
+         e.printStackTrace();
+      }finally {
+         dbmanager.release(con,pstmt);
+      }
+   }
    
-   //vector의 data 를 대상으로 조사 
- public void search() {
-       // Vector <Hotel>result=new Vector<Hotel>();
+   
+      public void search() {
+        Vector <Hotel>result=new Vector<Hotel>(); //검사결과 담을 벡터 
         String word=t_hotelName.getText();
         
-        
-        /*for(int i=0;i<model.data.size();i++) {
-          /String d=(String)model.getValueAt(i, 1);
-             
-           if(d.startsWith(word)) {
-              //벡터에 VO 만들어 넣어주기 
-//              hotel.setArea(d);
-//              result.add(hotel);
-//              
-//              model.data.add(hotel);
+        for(int i=0;i<model.data.size();i++) {
+           Hotel hotel=model.data.get(i);
+           
+           if(hotel.getArea().startsWith(word)) {
+              result.add(hotel);
            }
            
         }
-       //교체 
-      // table.setModel(model);
-       //업ㄷ티 
-       table.updateUI();;
-      }*/
+        model.data=result;
+        //교체 
+        table.setModel(model);     
+        //업데이트
+        table.updateUI();;
+      }
+      
+    
    }
-   }
-
-   
-  
- 
-   

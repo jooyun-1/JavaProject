@@ -1,6 +1,7 @@
 package JavaProject.rentcar;
 
 import java.awt.BorderLayout;
+import java.awt.Choice;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -12,12 +13,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -26,7 +25,6 @@ import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
 
 import JavaProject.tour.DBManager;
-import JavaProject.tour.Member;
 import JavaProject.tour.TourApp;
 
 
@@ -44,13 +42,13 @@ public class CarMain extends JFrame{
    JScrollPane t_scroll;
 
    //동쪽
-   //Choice car; //차량선택 
-   //Choice option; // 차량 종류
+   Choice car; //차량선택 
+   Choice option; // 차량 종류
    JPanel empty; // 띄어쓰기
    JLabel c_option; //차량옵션 라벨 
    
    JPanel empty3;
-   JLabel la_name;
+   JLabel c_name;
    JTextField car_name;
    JLabel la_pick; //픽업장소
    JTextField pick;
@@ -68,19 +66,20 @@ public class CarMain extends JFrame{
    JScrollPane scroll;
    JPanel bt_empty;
    JButton bt_regist;
- 
    
-   String[] columnName = { "Type", "차 종류", "이용시간",  "이용금액"};
+   
+   
+   String[] columnName = { "차 종류", "차 이름",  "이용시간",  "이용금액"};
    String[][] rows = {};
    int car_id; 
    DBManager dbmanager=new DBManager();
    Connection con=dbmanager.getConnection();
-   ArrayList<CarData> carList=new ArrayList<CarData>(); //size 0 즉 아무것도 채워진게 없다
-   ArrayList<CarDetail> subList=new ArrayList<CarDetail>();
+   //ArrayList<CarData> carList=new ArrayList<CarData>(); //size 0 즉 아무것도 채워진게 없다
+   //ArrayList<CarDetail> subList=new ArrayList<CarDetail>();
    TourApp tourApp;
    
    public  CarMain(TourApp tourApp) {
-     this.tourApp=tourApp;
+   this.tourApp=tourApp;  
    
      //상단바 & 테이블
       p_center= new JPanel();
@@ -112,13 +111,12 @@ public class CarMain extends JFrame{
       
       t_scroll=new JScrollPane(table);
       t_keyword = new JTextField(); //검색창
-      bt_search = new JButton("search"); //검색버튼
+      bt_search = new JButton("검색"); //검색버튼
    
       //동쪽 영역 (차량정보 등)
       p_east= new JPanel();
-     
       
-      
+
       empty = new JPanel();
       c_option = new JLabel("차량 예약 정보");
 
@@ -126,7 +124,7 @@ public class CarMain extends JFrame{
 
       
       empty3 = new JPanel();
-      la_name=new JLabel("차 종류");
+      c_name=new JLabel("차 종류");
       car_name=new JTextField(25);
       la_pick = new JLabel("픽업장소");
       pick = new JTextField(25);
@@ -177,8 +175,8 @@ public class CarMain extends JFrame{
       p_center.setLayout(new FlowLayout());
       
       Dimension d = new Dimension(380,30); //공통 크기
-      //car.setPreferredSize(d);
-      //option.setPreferredSize(d);
+      
+
       
       Dimension a = new Dimension(380,7);
       empty3.setPreferredSize(a);
@@ -186,7 +184,7 @@ public class CarMain extends JFrame{
       
       
       Dimension z= new Dimension(120,30);
-      la_name.setPreferredSize(z);
+      c_name.setPreferredSize(z);
       la_pick.setPreferredSize(z);
       la_return.setPreferredSize(z);
       la_time.setPreferredSize(z);
@@ -205,13 +203,11 @@ public class CarMain extends JFrame{
       p_search.add(t_keyword);
       p_search.add(bt_search);  
       p_center.add(t_scroll);
-      //p_east.add(car);
-      //p_east.add(option);
+
+
       p_east.add(empty);
-      p_east.add(c_option);
+      
       p_east.add(empty3);
-      p_east.add(la_name);
-      p_east.add(car_name);
       p_east.add(la_pick);
       p_east.add(pick);
       p_east.add(la_return);
@@ -225,8 +221,8 @@ public class CarMain extends JFrame{
       p_east.add(detail);
       p_east.add(bt_empty);
       p_east.add(bt_regist);
-     
-     
+
+      
       
       add(p_center, BorderLayout.NORTH);
       add(p_east, BorderLayout.EAST);
@@ -235,100 +231,58 @@ public class CarMain extends JFrame{
       //보여주기
       setBounds(300,100,1300,500);
       setVisible(true);
-      //setDefaultCloseOperation(EXIT_ON_CLOSE);
+   
       
-      //리스너 연결
-      /*car.addItemListener(new ItemListener() {
-         public void itemStateChanged(ItemEvent e) {
-            //지금 선택한 상위카테고리의 pk값을 알아 맞추려면???
-            Choice ca=(Choice)e.getSource();
-            
-            System.out.println("당신이 선택한 아이템은 "+ca.getSelectedIndex()+" 번째 입니다");
-            
-            //유저가 현재 선택한 Choice에서의 아이템을 이용하여 ArrayList의 객체를 꺼내자!! 
-            int index = ca.getSelectedIndex()-1; 
-            CarData cardata=carList.get(index);//topList에서 VO 한개 꺼내기!!
-            System.out.println("선택하신 아이템의 정보 cardata_id="+cardata.getCardata_id());
-            System.out.println("선택하신 아이템의 정보 cardata_name="+cardata.getCardata_name());
-            
-            getSubList(cardata.getCardata_id()); 
-         }
-      });*/
+
       
       
       //검색하기
       bt_search.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-         //findSearch();
+         search();
       }
    });
       
       //등록하기
       bt_regist.addActionListener(new ActionListener() {
          public void actionPerformed(ActionEvent e) {
-             reserv();
-             
+              
+              table.updateUI();
            }
         });
       
-   
-      
+     
       table.addMouseListener(new MouseAdapter() {
-          public void mouseReleased(MouseEvent e) {
-             //String car_type=(String) table.getValueAt(table.getSelectedRow(), 0);
-             String name=(String) table.getValueAt(table.getSelectedRow(), 1);
-             String usetime=(String) table.getValueAt(table.getSelectedRow(), 2);
-             int c_price=Integer.parseInt((String)table.getValueAt(table.getSelectedRow(), 3));
-            
-             car_name.setText(name);
-             time.setText(usetime);
-             price.setText(Integer.toString(c_price));
-          }
-       });   
+    	  public void mouseReleased(MouseEvent e) {
+    		  //String car_type=(String) table.getValueAt(table.getSelectedRow(), 0);
+    		  String name=(String) table.getValueAt(table.getSelectedRow(), 1);
+    		  String usetime=(String) table.getValueAt(table.getSelectedRow(), 2);
+    		  int c_price=Integer.parseInt((String)table.getValueAt(table.getSelectedRow(), 3));
+    		  
+    		  car_name.setText(name);
+    		  time.setText(usetime);
+    		  price.setText(Integer.toString(c_price));
+    	  }
+      });
+
       
+     
       getDetailtList();
    }    
    
 
-   		public void reserv() {
-	   Member member=tourApp.getMember();
-	   
-	   String sql="insert into r_reserv(member_id,car_name,pickarea,returnarea,time,price,detail) values(?,?,?,?,?,?,?)";
-	   
-	   
-		PreparedStatement pstmt=null;
-		Connection con=dbmanager.getConnection();
-		try {
-			pstmt=con.prepareStatement(sql);
-			pstmt.setInt(1,member.getMember_id());
-			pstmt.setString(2, car_name.getText());
-			pstmt.setString(3, pick.getText());
-			pstmt.setString(4, r_return.getText());
-			pstmt.setInt(5, Integer.parseInt(time.getText()));
-			pstmt.setInt(6,Integer.parseInt(price.getText()));
-			pstmt.setString(7, detail.getText());
-			int result=pstmt.executeUpdate();
-			if(result==1) {
-				System.out.println("등록성공");
-			}else {
-				System.out.println("등록실패");
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}finally {
-			dbmanager.release(con,pstmt);
-		}
-	}
    
-   
-   
+
       public void getDetailtList() {
          
          PreparedStatement pstmt=null;
          ResultSet rs=null;
          
-         String sql="select car_type,car_name,usetime, price from rentcar";
-  
+         String sql="select  car_name, car_type, usetime, price";
+         sql+=" from rentcar";
+         
+         
+         
          try {
             pstmt=con.prepareStatement(sql
                   , ResultSet.TYPE_SCROLL_INSENSITIVE
@@ -344,11 +298,13 @@ public class CarMain extends JFrame{
             rs.beforeFirst(); // 커서 위치 제자리로
             int index=0;
             while(rs.next()) {
+
                rows[index][0]=rs.getString("car_type");
                rows[index][1]=rs.getString("car_name");
                rows[index][2]=Integer.toString(rs.getInt("usetime"));
                rows[index][3]=Integer.toString(rs.getInt("price"));
-           
+              
+         
                
                index++;
             }
@@ -356,6 +312,46 @@ public class CarMain extends JFrame{
          } catch (SQLException e) {
             e.printStackTrace();
          }finally {
+            dbmanager.release(con,pstmt,rs);
+         }
+      }
+      public void search() {
+    	  
+          PreparedStatement pstmt=null;
+          ResultSet rs=null;
+          Connection con=dbmanager.getConnection();
+          String sql="select  * from rentcar where car_type=?";
+          
+          try {
+        	  pstmt=con.prepareStatement(sql
+                      , ResultSet.TYPE_SCROLL_INSENSITIVE
+                      ,  ResultSet.CONCUR_READ_ONLY);
+			pstmt.setString(1,t_keyword.getText());
+			 rs=pstmt.executeQuery();
+	            rs.last();// 커서를 마지막 레코드로 보냄
+	            int total = rs.getRow(); //레코드 번호 구하기
+	            
+	            
+	            rows=new String[total][columnName.length];
+	            
+	            rs.beforeFirst(); // 커서 위치 제자리로
+	            int index=0;
+	            while(rs.next()) {
+
+	               rows[index][0]=rs.getString("car_type");
+	               rows[index][1]=rs.getString("car_name");
+	               rows[index][2]=Integer.toString(rs.getInt("usetime"));
+	               rows[index][3]=Integer.toString(rs.getInt("price"));
+	              
+	         
+	               
+	               index++;
+	            }
+	            table.updateUI(); // JTable 갱신
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+		}finally {
             dbmanager.release(con,pstmt,rs);
          }
       }

@@ -4,12 +4,15 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.net.URL;
 import java.util.Calendar;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -20,11 +23,7 @@ import util.StringManager;
 
 
 
-
-
-
-
-public  class Diary extends JFrame {
+public class Diary extends JFrame{
    
    JPanel p_north;
    JButton bt_prev;
@@ -38,14 +37,12 @@ public  class Diary extends JFrame {
    DateBox[] boxArray=new DateBox[dayArray.length*6];
    Calendar currentDate;//현재날짜 정보를 가진 객체
    
-   
-
    //기념일에 대한 데이터를 구성..
+   int clickCheck;
+   HotelMain main;
    
-   
-   
-   
-   public Diary() {
+   public Diary(HotelMain main) {
+      this.main=main;
       p_north=new JPanel();
       bt_prev=new JButton("이전"); 
       la_title=new JLabel("년 월",SwingConstants.CENTER);
@@ -88,17 +85,12 @@ public  class Diary extends JFrame {
          }
       });
       
-      this.addMouseListener(new MouseAdapter() {
-         public void mouseReleased(MouseEvent e) {
-            
-         }
-      });
       
       
       //보여주기
       setVisible(true);
       setSize(780,780);
-      
+      setDefaultCloseOperation(EXIT_ON_CLOSE);
       
    }
    
@@ -133,6 +125,7 @@ public  class Diary extends JFrame {
          
          //배열에 담아놓아야, 추후 필요할때 사용이 가능!!
          boxArray[i]=dateBox;
+         
       }
    }
    
@@ -168,11 +161,36 @@ public  class Diary extends JFrame {
             if(n<=getLastDate(yy, mm+1)) {
                boxArray[i].day=Integer.toString(n);
                boxArray[i].repaint();//텍스트를 다시 그리자!!즉 갱싱!!
-               
-   
                n++;
+               
+               
             }
          }
+         boxArray[i].addMouseListener(new MouseAdapter() {
+            public void mouseReleased(MouseEvent e) {
+                  DateBox mouseClick = (DateBox)e.getSource();
+                  String str= (String)mouseClick.getDay();
+                  String ym=la_title.getText();
+                  
+                  
+                  if(str.equals(""));
+                  else if(str.length()==1) {
+                     str="0"+str;
+                  }
+         
+                  if(clickCheck==0) {
+                     main.t_checkin.setText(ym+"/"+str);               
+                     clickCheck++;
+                  } else if(clickCheck==1) {
+                     main.t_checkout.setText(ym+"/"+str);
+                     clickCheck=0;
+                     dispose();
+                  }
+                  System.out.println(str);
+                  
+            }
+            
+         });      
       }
    }
    //기존의 Box에 그려진 스트링 모두 지우기
@@ -210,7 +228,13 @@ public  class Diary extends JFrame {
       
    }
    
-
+   public Image getIcon(String filename) {
+      URL url=this.getClass().getClassLoader().getResource(filename);
+      ImageIcon icon=new ImageIcon(url);
+      
+      return icon.getImage();//이미지로 변환하여 반환
+   }
+   
    
    
 }

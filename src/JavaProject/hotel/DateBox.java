@@ -14,7 +14,15 @@ public class DateBox extends JPanel{
    int width;
    int height;
    String day;
-   Color color;
+   public String getDay() {
+	return day;
+}
+
+public void setDay(String day) {
+	this.day = day;
+}
+
+Color color;
    Image img;
    
    public DateBox(String day,Color color,int width,int height) {
