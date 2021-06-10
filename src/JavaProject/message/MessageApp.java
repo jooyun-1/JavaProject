@@ -1,6 +1,7 @@
 package JavaProject.message;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -17,6 +18,7 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.Vector;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -26,6 +28,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.border.Border;
 
 import JavaProject.tour.DBManager;
 import JavaProject.tour.Member;
@@ -59,7 +62,7 @@ public class MessageApp extends JFrame {
    JPanel bt_empty, bt_emptyw;
    JButton bt_del, bt_registw;
    JButton bt_registc, bt_registcw;
-   
+  
 
    //String[] columnName = { "ID", "title", "writer", "content", "regdate", "hit" };
    //String[][] rows = {};
@@ -75,59 +78,112 @@ public class MessageApp extends JFrame {
       
       // 상단바 & 테이블
       p_center = new JPanel();
+      p_center.setBackground(Color.WHITE);
+      
       la_panel = new JPanel(); // 검색패널
+      la_panel.setBackground(Color.WHITE);
 
       table = new JTable();
 
       t_scroll = new JScrollPane(table);
-      la_text = new JLabel("Review Content"); // 검색창
-
-      // 동쪽 영역 (차량정보 등)
+      la_text = new JLabel("Review contents"); // 검색창
+      la_text.setForeground(Color.DARK_GRAY);
+     
       p_east = new JPanel();
+      p_east.setBackground(Color.WHITE);
+      
       empty = new JPanel();
-      t_text = new JLabel("Regist Review");
-
+      empty.setBackground(Color.WHITE);
+      
+      t_text = new JLabel("[ Regist Review ]");
+      t_text.setForeground(Color.DARK_GRAY);
+      
       empty3 = new JPanel();
+      empty3.setBackground(Color.WHITE);
+      
       la_title = new JLabel("제목");
+      la_title.setForeground(Color.DARK_GRAY);
       titlee = new JTextField(25);
+      
       la_writer = new JLabel("작성자");
+      la_writer.setForeground(Color.DARK_GRAY);
       writere = new JTextField(25);
 
       // 요청사항
       // empty4 = new JPanel();
       la_content = new JLabel("내용");
+      la_content.setForeground(Color.DARK_GRAY);
+      
+      Border border = BorderFactory.createLineBorder(Color.DARK_GRAY);
       contente = new JTextArea("--내용을 입력하세요--");
+      contente.setBorder(border);
+     
+      
       scroll = new JScrollPane(contente);
 
       bt_empty = new JPanel();
+      bt_empty.setBackground(Color.WHITE);
+      
       bt_del = new JButton("삭제하기");
+      bt_del.setBackground(Color.DARK_GRAY);
+      bt_del.setForeground(Color.WHITE);
+      
       bt_registc = new JButton("수정하기");
+      bt_registc.setBackground(Color.DARK_GRAY);
+      bt_registc.setForeground(Color.WHITE);
       
       // 서쪽영역
       p_west = new JPanel();
+      p_west.setBackground(Color.WHITE);
+      
       emptyw = new JPanel();
-      t_textw = new JLabel("Your Review");
+      emptyw.setBackground(Color.WHITE);
+      
+      t_textw = new JLabel("[ Your Review ]");
+      t_textw.setForeground(Color.DARK_GRAY);
+      
 
       empty3w = new JPanel();
+      empty3w.setBackground(Color.WHITE);
+      
       la_titlew = new JLabel("제목");
+      la_titlew.setForeground(Color.DARK_GRAY);
+      
       titlew = new JTextField(25);
+      
       la_writerw = new JLabel("작성자");
+      la_writerw.setForeground(Color.DARK_GRAY);
+      
       writerw = new JTextField(25);
 
       // 요청사항
-      // empty4w = new JPanel();
       la_contentw = new JLabel("내용");
+      la_contentw.setForeground(Color.DARK_GRAY);
+      
+      Border border2 = BorderFactory.createLineBorder(Color.DARK_GRAY);
       contentw = new JTextArea("--내용을 입력하세요--");
+      contentw.setBorder(border2);
+     
+      
       scrollw = new JScrollPane(contente);
 
       bt_emptyw = new JPanel();
+      bt_emptyw.setBackground(Color.WHITE);
+      
       bt_registw = new JButton("등록하기");
+      bt_registw.setBackground(Color.DARK_GRAY);
+      bt_registw.setForeground(Color.WHITE);
+      
       bt_registcw = new JButton("게시판 목록");
+      bt_registcw.setBackground(Color.DARK_GRAY);
+      bt_registcw.setForeground(Color.WHITE);
+      
+
       
 
       // 스타일 및 레이아웃
 
-      la_text.setFont(new Font("Vredana", Font.BOLD, 25));
+      la_text.setFont(new Font("Vredana", Font.BOLD, 30));
       la_title.setFont(new Font("Vredana", Font.BOLD, 15));
       la_writer.setFont(new Font("Vredana", Font.BOLD, 15));
       la_content.setFont(new Font("Vredana", Font.BOLD, 15));
@@ -149,10 +205,10 @@ public class MessageApp extends JFrame {
       p_west.setPreferredSize(new Dimension(380, 500));
 
       // 예약정보 글씨
-      t_text.setFont(new Font("Serif", Font.BOLD, 25));
+      t_text.setFont(new Font("ITALIC", Font.BOLD, 20));
       scroll.setPreferredSize(new Dimension(180, 180));
       empty.setPreferredSize(new Dimension(70, 100));
-      t_textw.setFont(new Font("Serif", Font.BOLD, 25));
+      t_textw.setFont(new Font("ITALIC", Font.BOLD, 20));
       scrollw.setPreferredSize(new Dimension(180, 180));
       emptyw.setPreferredSize(new Dimension(70, 100));
 
@@ -212,7 +268,7 @@ public class MessageApp extends JFrame {
       p_west.add(bt_emptyw);
       p_west.add(bt_registw);
       p_west.add(bt_registcw);
-      
+    
 
       add(p_center, BorderLayout.NORTH);
       add(p_east, BorderLayout.EAST);
@@ -225,7 +281,7 @@ public class MessageApp extends JFrame {
       
       this.addWindowListener(new WindowAdapter() {
          public void windowClosing(WindowEvent e) {
-            
+            System.exit(0); // 프로세스 종료
             dbmanager.release(con);;
          }
          
@@ -294,9 +350,9 @@ public class MessageApp extends JFrame {
       });
       
       
-      setBounds(300, 100, 1300, 500);
+      setBounds(300, 100, 1300, 600);
        setVisible(true);
-       
+        
          
         
        

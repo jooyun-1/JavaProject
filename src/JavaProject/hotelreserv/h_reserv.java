@@ -5,16 +5,23 @@ package JavaProject.hotelreserv;
 import javax.swing.JFrame;
 
 public class h_reserv {
-   private int member_id;
+   
+   private String m_name;
    private String h_name;
    private String h_area;
    private String h_type;
+   private String checkin;
+   private String checkout;
    private int h_price;
-   public int getMember_id() {
-      return member_id;
+   
+   
+   
+   
+   public String getM_name() {
+      return m_name;
    }
-   public void setMember_id(int member_id) {
-      this.member_id = member_id;
+   public void setM_name(String m_name) {
+      this.m_name = m_name;
    }
    public String getH_name() {
       return h_name;
@@ -34,10 +41,23 @@ public class h_reserv {
    public void setH_type(String h_type) {
       this.h_type = h_type;
    }
+   public String getCheckin() {
+      return checkin;
+   }
+   public void setCheckin(String checkin) {
+      this.checkin = checkin;
+   }
+   public String getCheckout() {
+      return checkout;
+   }
+   public void setCheckout(String checkout) {
+      this.checkout = checkout;
+   }
    public int getH_price() {
       return h_price;
    }
    public void setH_price(int h_price) {
       this.h_price = h_price;
    }
+
 }

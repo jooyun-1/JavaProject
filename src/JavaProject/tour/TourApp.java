@@ -19,10 +19,9 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-
+import JavaProject.customerchat.Client;
 import JavaProject.hotel.HotelMain;
 import JavaProject.hotelreserv.Hotelres;
-
 import JavaProject.message.MessageApp;
 import JavaProject.rentcar.CarMain;
 
@@ -33,7 +32,7 @@ public class TourApp extends JFrame{
    JMenu[] menu;
    String[] menu_title= {"reservation","community"};
    JMenuItem[][] itemArray;
-   String[][] item_title={{"hotel","rentcar"},{"chat","customer"}};
+   String[][] item_title={{"hotel","rentcar"},{"chat","review"}};
    ShowAction showaction;
    JScrollPane scrollPane;
    ImageIcon i = new ImageIcon("D:\\workspace\\korea202102_javaworkspace\\JavaProject\\res\\Main.jpg");
@@ -41,7 +40,7 @@ public class TourApp extends JFrame{
     //JPanel p_center;
     JButton list;
    JButton logout;
-   JButton re;
+   
    JPanel p_north;
    MessageApp messageapp;
    
@@ -82,7 +81,6 @@ public class TourApp extends JFrame{
       
        JPanel p_north = new JPanel();
          list = new JButton("Reservation");
-         re = new JButton("REVIEW");
         logout = new JButton("LOGOUT");
         
         list.addActionListener(new ActionListener() {
@@ -93,14 +91,7 @@ public class TourApp extends JFrame{
 				
 			}
 		});
-        re.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				
-				new MessageApp(TourApp.this);
-			}
-		});
+      
         logout.addActionListener(new ActionListener() {
 			
     			
@@ -121,8 +112,7 @@ public class TourApp extends JFrame{
         p_north.add(panel);
         p_north.add(list);
         p_north.add(logout);
-        p_north.add(re);
-   
+       
           
         add(panel,BorderLayout.CENTER);
         add(p_north, BorderLayout.SOUTH);
@@ -131,7 +121,7 @@ public class TourApp extends JFrame{
 
         list.setBackground(Color.white);
         logout.setBackground(Color.white);
-        re.setBackground(Color.white);
+        
 
        
         
@@ -209,9 +199,9 @@ public class TourApp extends JFrame{
                      break;
             
                   case "chat":
-                    
+                	 new Client(TourApp.this);
                      break;
-                  case "Review":
+                  case "review":
                      new MessageApp(TourApp.this);
                      break;
                   }

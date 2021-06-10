@@ -162,6 +162,7 @@ public class JoinForm extends JFrame {
                int result=pstmt.executeUpdate();
                if(result==1) {
                   JOptionPane.showMessageDialog(this, "회원가입이 완료되셨습니다");
+                  dispose();
                }else {
                   JOptionPane.showMessageDialog(this, "다시 입력하여주세요");
                }

@@ -5,7 +5,7 @@ import java.util.Vector;
 import javax.swing.table.AbstractTableModel;
 
 public class RentModel extends AbstractTableModel{
-   Vector<r_reserv>data=new Vector<r_reserv>();
+   public Vector<r_reserv>data=new Vector<r_reserv>();
    Vector<String> column=new Vector<String>();
    
    public RentModel() {

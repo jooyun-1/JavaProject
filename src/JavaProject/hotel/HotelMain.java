@@ -1,6 +1,7 @@
 package JavaProject.hotel;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -36,119 +37,141 @@ import JavaProject.tour.TourApp;
 
 
 public class HotelMain extends JFrame{
-   JPanel p_north,p_east;
-   JLabel la_search;//지역 검색 라벨
-   JTextField t_hotelName;
-   JButton bt_search;
-   JButton loadXml;
-   
-   JTable table;
-   JScrollPane scroll;
-   
-   JLabel la_hotel;//이름
-   JTextField t_hotel;
-   JLabel la_area;//지역
-   JTextField t_area;
-   JLabel la_type;//종류
-   JTextField t_type;
-   JLabel la_price;//가격
-   JTextField t_price;
-   JLabel la_checkin;//예약 시작일
-   JTextField t_checkin;
-   JLabel la_checkout;//예약 종료일
-   JTextField t_checkout;
-   JButton bt_reservation;//예약하기
-   JButton bt_diary;
-   
-   
-   DBManager dbmanager=new DBManager();
-   HotelHandler handler;
-   Diary diary;
-   TourApp tourApp;
-   HotelModel model;
-   Connection con;
+	   JPanel p_north,p_east;
+	   JLabel la_search;//지역 검색 라벨
+	   JTextField t_hotelName;
+	   JButton bt_search;
+	   JButton loadXml;
+	   
+	   JTable table;
+	   JScrollPane scroll;
+	   
+	   JLabel la_hotel;//이름
+	   JTextField t_hotel;
+	   JLabel la_area;//지역
+	   JTextField t_area;
+	   JLabel la_type;//종류
+	   JTextField t_type;
+	   JLabel la_price;//가격
+	   JTextField t_price;
+	   JLabel la_checkin;//예약 시작일
+	   JTextField t_checkin;
+	   JLabel la_checkout;//예약 종료일
+	   JTextField t_checkout;
+	   JButton bt_reservation;//예약하기
+	   JButton bt_diary;
+	   
+	   
+	   DBManager dbmanager=new DBManager();
+	   HotelHandler handler;
+	   Diary diary;
+	   TourApp tourApp;
+	   HotelModel model;
+	   Connection con;
 
-   public HotelMain(TourApp tourApp) {
-     this.tourApp=tourApp;
-    
-      //생성
-      p_north=new JPanel();
-      la_search=new JLabel("지역을 검색 해주세요                         ex)서울,충청도,제주도...");
-      t_hotelName=new JTextField(25);
-      loadXml=new JButton("목록보기");
-      bt_search=new JButton("검색");
-      
-      //센터
-      table=new JTable();
-      scroll=new JScrollPane(table);
-      
-      p_east=new JPanel();
-      la_hotel=new JLabel("숙소이름");
-      t_hotel=new JTextField();
-      la_area=new JLabel("지역");
-      t_area=new JTextField();
-      la_type=new JLabel("숙박종류");
-      t_type=new JTextField();
-      la_price=new JLabel("가격");
-      t_price=new JTextField();
-      la_checkin=new JLabel("예약시작일");
-      t_checkin=new JTextField();
-      la_checkout=new JLabel("예약종료일");
-      t_checkout=new JTextField();
-      bt_reservation=new JButton("예약하기");
-      bt_diary=new JButton("예약일");
-      
-      //스타일 
+	   public HotelMain(TourApp tourApp) {
+	     this.tourApp=tourApp;
+	    
+	      //생성
+	      p_north=new JPanel();
+	      p_north.setBackground(Color.WHITE);
+	      
+	      la_search=new JLabel("지역을 검색 해주세요                         ex)서울,충청도,제주도...");
+	      la_search.setForeground(Color.DARK_GRAY);
+	      
+	      t_hotelName=new JTextField(25);
+	      loadXml=new JButton("목록보기");
+	      loadXml.setBackground(Color.DARK_GRAY);
+	      loadXml.setForeground(Color.WHITE);
+	      
+	      bt_search=new JButton("검색");
+	      bt_search.setBackground(Color.DARK_GRAY);
+	      bt_search.setForeground(Color.WHITE);
+	      
+	      //센터
+	      table=new JTable();
+	      scroll=new JScrollPane(table);
+	      
+	      p_east=new JPanel();
+	      p_north.setBackground(Color.WHITE);
+	      
+	      la_hotel=new JLabel("숙소이름");
+	      la_hotel.setForeground(Color.DARK_GRAY);
+	      t_hotel=new JTextField();
+	      la_area=new JLabel("지역");
+	      la_area.setForeground(Color.DARK_GRAY);
+	      t_area=new JTextField();
+	      la_type=new JLabel("숙박종류");
+	      la_type.setForeground(Color.DARK_GRAY);
+	      t_type=new JTextField();
+	      la_price=new JLabel("가격");
+	      la_price.setForeground(Color.DARK_GRAY);
+	      t_price=new JTextField();
+	      la_checkin=new JLabel("예약시작일");
+	      la_checkin.setForeground(Color.DARK_GRAY);
+	      
+	      t_checkin=new JTextField();
+	      la_checkout=new JLabel("예약종료일");
+	      la_checkout.setForeground(Color.DARK_GRAY);
+	      t_checkout=new JTextField();
+	      bt_reservation=new JButton("예약하기");
+	      bt_reservation.setBackground(Color.DARK_GRAY);
+	      bt_reservation.setForeground(Color.WHITE);
+	      
+	      bt_diary=new JButton("예약일");
+	      bt_diary.setBackground(Color.DARK_GRAY);
+	      bt_diary.setForeground(Color.WHITE);
+	      
+	      //스타일 
 
 
-      scroll.setPreferredSize(new Dimension(800,400));
-      p_east.setLayout(new FlowLayout());
-      p_east.setPreferredSize(new Dimension(500,400));
-      
-      Dimension d=new Dimension(400,30);
-      t_hotel.setPreferredSize(d);
-      t_area.setPreferredSize(d);
-      t_type.setPreferredSize(d);
-      t_price.setPreferredSize(d);
-      t_checkin.setPreferredSize(d);
-      t_checkout.setPreferredSize(d);
-      
-      Dimension a=new Dimension(80,30);
-      la_hotel.setPreferredSize(a);
-      la_area.setPreferredSize(a);
-      la_type.setPreferredSize(a);
-      la_price.setPreferredSize(a);
-      la_checkin.setPreferredSize(a);
-      la_checkout.setPreferredSize(a);
-      la_search.setPreferredSize(new Dimension(330,30));
-      
-      
-      //조립
-      
-      p_north.add(la_search);
-     p_north.add(t_hotelName);
-     p_north.add(loadXml);
-     p_north.add(bt_search);
-     add(p_north,BorderLayout.NORTH);
- 
-   
-      add(scroll);
-      p_east.add(la_hotel);
-      p_east.add(t_hotel);
-      p_east.add(la_area);
-      p_east.add(t_area);
-      p_east.add(la_type);
-      p_east.add(t_type);
-      p_east.add(la_price);
-      p_east.add(t_price);
-      p_east.add(la_checkin);
-      p_east.add(t_checkin);
-      p_east.add(la_checkout);
-      p_east.add(t_checkout);
-      p_east.add(bt_diary);
-      p_east.add(bt_reservation);
-      add(p_east,BorderLayout.EAST);
-      
+	      scroll.setPreferredSize(new Dimension(800,400));
+	      p_east.setLayout(new FlowLayout());
+	      p_east.setPreferredSize(new Dimension(500,400));
+	      
+	      Dimension d=new Dimension(400,30);
+	      t_hotel.setPreferredSize(d);
+	      t_area.setPreferredSize(d);
+	      t_type.setPreferredSize(d);
+	      t_price.setPreferredSize(d);
+	      t_checkin.setPreferredSize(d);
+	      t_checkout.setPreferredSize(d);
+	      
+	      Dimension a=new Dimension(80,30);
+	      la_hotel.setPreferredSize(a);
+	      la_area.setPreferredSize(a);
+	      la_type.setPreferredSize(a);
+	      la_price.setPreferredSize(a);
+	      la_checkin.setPreferredSize(a);
+	      la_checkout.setPreferredSize(a);
+	      la_search.setPreferredSize(new Dimension(330,30));
+	      
+	      
+	      //조립
+	      
+	      p_north.add(la_search);
+	     p_north.add(t_hotelName);
+	     p_north.add(loadXml);
+	     p_north.add(bt_search);
+	     add(p_north,BorderLayout.NORTH);
+	 
+	   
+	      add(scroll);
+	      p_east.add(la_hotel);
+	      p_east.add(t_hotel);
+	      p_east.add(la_area);
+	      p_east.add(t_area);
+	      p_east.add(la_type);
+	      p_east.add(t_type);
+	      p_east.add(la_price);
+	      p_east.add(t_price);
+	      p_east.add(la_checkin);
+	      p_east.add(t_checkin);
+	      p_east.add(la_checkout);
+	      p_east.add(t_checkout);
+	      p_east.add(bt_diary);
+	      p_east.add(bt_reservation);
+	      add(p_east,BorderLayout.EAST);
       //리스너
       
      //검색
@@ -245,9 +268,9 @@ public class HotelMain extends JFrame{
          
          int result=pstmt.executeUpdate();
          if(result==1) {
-            JOptionPane.showMessageDialog(this, "등록성공");
+            JOptionPane.showMessageDialog(this, "예약 완료되셨습니다");
          }else {
-            JOptionPane.showMessageDialog(this, "등록실패");
+            System.out.println("실패");
          }
       } catch (SQLException e) {
          e.printStackTrace();
