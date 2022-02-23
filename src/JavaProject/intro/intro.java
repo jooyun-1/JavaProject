@@ -105,7 +105,7 @@ public class Intro extends JFrame{
       
       
 <<<<<<< Upstream, based on origin/master
-      //스타일 및 레이아웃 6
+      //스타일 및 레이아웃 7
 =======
       
 >>>>>>> 071c200 t1
