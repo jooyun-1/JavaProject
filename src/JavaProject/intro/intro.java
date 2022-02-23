@@ -104,7 +104,7 @@ public class Intro extends JFrame{
       chatConsult.setBackground(Color.darkGray);
       
       
-      //스타일 및 레이아웃 1
+      //스타일 및 레이아웃 4
 
       empty.setPreferredSize(new Dimension(750,50));
       empty.setBackground(Color.WHITE);
